@@ -1,5 +1,8 @@
 # vue-timer
 
+## timer preview
+https://vue-timer-61878.firebaseapp.com/
+
 ## Project setup
 ```
 npm install
