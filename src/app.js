@@ -13,33 +13,25 @@ export default {
         }
     },
     methods: {
-        // computed ??
-        getFinishDate() {
-            let date = new Date();
-            date.setMinutes(date.getMinutes() + this.minutes);
-            date.setSeconds(date.getSeconds() + this.seconds);
-            date.setHours(date.getHours() + this.hours);
-            return date;
+        getCorrectNumberView(num) {
+            return num < 10 ? `0${num}` : num;
         },
         startTimer() {
             if (this.timerId === null) {
-                let finistDate = this.getFinishDate();
-                // debugger;
+                let finishDate = this.getFinishDate;
                 this.timerId = setInterval(() => {
-                    // debugger;
-                    let difference = new Date(finistDate - new Date());
+                    let difference = new Date(finishDate - new Date());
                     if (+difference <= 0) {
-                        console.log("STOP");
-                        this.clearTimer();
-                        alert('The time is out');
+                        this.stopTimer();
                         return;
                     }
-                    console.log(difference);
-                    this.hours = difference.getUTCHours();
-                    this.minutes = difference.getUTCMinutes();
-                    this.seconds = difference.getUTCSeconds();
-                }, 250);
+                    this.setTime(difference.getUTCHours(), difference.getUTCMinutes(), difference.getUTCSeconds());
+                }, 200);
             }
+        },
+        stopTimer() {
+            this.clearTimer();
+            alert('The time is out');
         },
         pauseTimer() {
             // зупиняєм поточний інтервал
@@ -51,7 +43,7 @@ export default {
         },
         resetTimer() {
             this.clearTimer();
-            this.setTimer(0,0,0);
+            this.setTimer(0, 0, 0);
         },
         setTimer() {
             this.setTime(this.customTime.hours, this.customTime.minutes, this.customTime.seconds);
@@ -72,9 +64,15 @@ export default {
         }
     },
     computed: {
-        timeLeft: function() {
-            return `${this.hours}:${this.minutes}:${this.seconds}`;
-            // return this.hours + ' ' + this.minutes + " " + this.seconds;
-        }
+        timeLeft: function () {
+            return `${this.getCorrectNumberView(this.hours)}:${this.getCorrectNumberView(this.minutes)}:${this.getCorrectNumberView(this.seconds)}`;
+        },
+        getFinishDate: function() {
+            let date = new Date();
+            date.setMinutes(date.getMinutes() + this.minutes);
+            date.setSeconds(date.getSeconds() + this.seconds);
+            date.setHours(date.getHours() + this.hours);
+            return date;
+        },
     },
 }
